@@ -17,3 +17,11 @@ def home():
     """Home page"""
 
     return ":0"
+
+# JSON API Routes
+
+
+@app.route('/api/cupcakes')
+def all_cupcakes():
+    """Get data about all cupcakes"""
+    cupcakes = Cupcake.query.all()
