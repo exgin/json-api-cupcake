@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify, render_template
 from models import db, connect_db, Cupcake
 from secrets import APP_CONFIG_SECRET_KEY
+from forms import AddCupcakeForm
 
 app = Flask(__name__)
 
@@ -12,11 +13,25 @@ app.config['SECRET_KEY'] = APP_CONFIG_SECRET_KEY
 connect_db(app)
 
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def home():
-    """Home page"""
+    """Home page, show all cupcakes & handle cupcake form"""
+    form = AddCupcakeForm()
+    cupcakes = Cupcake.query.all()
+    if form.validate_on_submit():
+        flavor = form.flavor.data
+        size = form.size.data
+        rating = form.size.data
+        image = form.image.data
 
-    return "u want a cupcake"
+        cupcake = Cupcake(flavor=flavor, size=size, rating=rating, image=image)
+        db.session.add(cupcake)
+        db.session.commit()
+    else:
+        return render_template('home.html', form=form, cupcakes=cupcakes)
+
+
+
 
 # RESTful JSON API Routes
 
