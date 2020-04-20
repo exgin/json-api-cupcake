@@ -21,7 +21,7 @@ def home():
     if form.validate_on_submit():
         flavor = form.flavor.data
         size = form.size.data
-        rating = form.size.data
+        rating = form.rating.data
         image = form.image.data
 
         cupcake = Cupcake(flavor=flavor, size=size, rating=rating, image=image)
